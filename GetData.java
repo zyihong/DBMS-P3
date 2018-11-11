@@ -120,10 +120,11 @@ public class GetData{
 
 				JSONObject current = new JSONObject();
 
-				rst2.next();
-				current.put("city", rst2.getString(1));
-				current.put("state", rst2.getString(2));
-				current.put("country", rst2.getString(3));
+				if(rst2.next()){
+					current.put("city", rst2.getString(1));
+					current.put("state", rst2.getString(2));
+					current.put("country", rst2.getString(3));
+				}
 				user.put("current", current);
 
 				rst2 = stmt2.executeQuery(
@@ -133,10 +134,11 @@ public class GetData{
 
 				JSONObject hometown = new JSONObject();
 			
-				rst2.next();
-				hometown.put("city", rst2.getString(1));
-				hometown.put("state", rst2.getString(2));
-				hometown.put("country", rst2.getString(3));
+				if(rst2.next()){
+					hometown.put("city", rst2.getString(1));
+					hometown.put("state", rst2.getString(2));
+					hometown.put("country", rst2.getString(3));
+				}
 				user.put("hometown", hometown);
 
 				users_info.put(user);
