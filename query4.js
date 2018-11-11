@@ -17,6 +17,31 @@ function suggest_friends(year_diff, dbname) {
     db = db.getSiblingDB(dbname);
     var pairs = [];
     // TODO: implement suggest friends
+    var A = db.users.find({gender: "male"}, {"_id": 0, "user_id": 1, "YOB": 1, "friends": 1, "hometown.city": 1});
+    //var B = db.users.find({gender: "female"}, {"_id": 0, "user_id": 1, "YOB": 1, "friends": 1, "hometown.city": 1});
+
+    A.forEach(function(UA){
+        //print("UA:" + UA.user_id);
+        var B = db.users.find({gender: "female"}, {"_id": 0, "user_id": 1, "YOB": 1, "friends": 1, "hometown.city": 1});
+        B.forEach(function(UB){
+            //print("UB:" + UB.user_id);
+            if(Math.abs(UA.YOB - UB.YOB) < year_diff && UA.hometown.city === UB.hometown.city){
+                //print("UA.friends: "+ UA.friends);
+                if (UA.user_id > UB.user_id && UB.friends.indexOf(UA.user_id) === -1){
+                    var pair = [];
+                    pair.push(UA.user_id);
+                    pair.push(UB.user_id);
+                    pairs.push(pair);
+                }
+                else if(UB.user_id > UA.user_id && UA.friends.indexOf(UB.user_id) === -1){
+                    var pair = [];
+                    pair.push(UA.user_id);
+                    pair.push(UB.user_id);
+                    pairs.push(pair);
+                }
+            }
+        })
+    })
     // Return an array of arrays.
     return pairs;
 }
