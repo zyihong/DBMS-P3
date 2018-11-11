@@ -10,6 +10,9 @@ function oldest_friend(dbname){
   db = db.getSiblingDB(dbname);
   var results = {};
   // TODO: implement oldest friends
+  db.users.find({}).forEach((ele) => {
+    
+  });
   // return an javascript object described above
   return results
 }
