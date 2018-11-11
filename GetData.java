@@ -83,7 +83,7 @@ public class GetData{
 			ResultSet rst = stmt.executeQuery("SELECT USER_ID,FIRST_NAME,LAST_NAME,YEAR_OF_BIRTH,MONTH_OF_BIRTH,DAY_OF_BIRTH,GENDER FROM "+userTableName);
 
 			while(rst.next()){
-				Long user_id = rst.getInt(1);
+				Long user_id = rst.getLong(1);
 				String first_name = rst.getString(2);
 				String last_name = rst.getString(3);
 				String gender = rst.getString(7);
@@ -103,7 +103,7 @@ public class GetData{
 				Statement stmt2 = oracleConnection.createStatement();
 				ResultSet rst2 = stmt2.executeQuery(
 					"SELECT USER2_ID FROM " + 
-					friendsTableName + " WHERE USER1_ID = " + id);
+					friendsTableName + " WHERE USER1_ID = " + user_id);
 
 				JSONArray friendlist = new JSONArray();
 			
@@ -116,7 +116,7 @@ public class GetData{
 				rst2 = stmt2.executeQuery(
 					"SELECT C.CITY_NAME, C.STATE_NAME, C.COUNTRY_NAME " + 
 					"FROM " + cityTableName + " C, " + currentCityTableName + " UC " + 
-					"WHERE C.CITY_ID = UC.CURRENT_CITY_ID AND UC.USER_ID = " + id);
+					"WHERE C.CITY_ID = UC.CURRENT_CITY_ID AND UC.USER_ID = " + user_id);
 
 				JSONObject current = new JSONObject();
 
@@ -129,7 +129,7 @@ public class GetData{
 				rst2 = stmt2.executeQuery(
 					"SELECT C.CITY_NAME, C.STATE_NAME, C.COUNTRY_NAME " + 
 					"FROM " + cityTableName + " C, " + hometownCityTableName + " UH " + 
-					"WHERE C.CITY_ID = UH.CURRENT_CITY_ID AND UH.USER_ID = " + id);
+					"WHERE C.CITY_ID = UH.HOMETOWN_CITY_ID AND UH.USER_ID = " + user_id);
 
 				JSONObject hometown = new JSONObject();
 			
