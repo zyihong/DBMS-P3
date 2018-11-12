@@ -9,10 +9,38 @@
 function oldest_friend(dbname){
   db = db.getSiblingDB(dbname);
   var results = {};
+  var friend = {};
   // TODO: implement oldest friends
-  db.users.find({}).forEach((ele) => {
-    
+  db.users.find({}).forEach((user) => {
+    user.friends.forEach((fri) => {
+      if (fri in friend) {
+        friend[fri].add(user.user_id);
+      }
+      else {
+        friend[fri] = new Set();
+      }
+      if (user.user_id in friend) {
+        friend[user.user_id].add(fri);
+      }
+      else {
+        friend[user.user_id] = new Set();
+      }
+    });
   });
+  for (var key of Object.keys(friend)) {
+    friend[key] = db.users.find({
+      user_id: {
+        $in: Array.from(friend[key])
+      }
+      }, {user_id: 1, YOB: 1
+    }).sort({YOB: 1, user_id:1}).limit(1);
+  }
+  for (var key of Object.keys(friend)) {
+    if (friend[key].hasNext()) {
+      var found = friend[key].next();
+      results[key] = found.user_id;
+    }
+  }
   // return an javascript object described above
   return results
 }

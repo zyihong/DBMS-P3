@@ -35,8 +35,8 @@ function suggest_friends(year_diff, dbname) {
                 }
                 else if(UB.user_id > UA.user_id && UA.friends.indexOf(UB.user_id) === -1){
                     var pair = [];
-                    pair.push(UA.user_id);
                     pair.push(UB.user_id);
+                    pair.push(UA.user_id);
                     pairs.push(pair);
                 }
             }
